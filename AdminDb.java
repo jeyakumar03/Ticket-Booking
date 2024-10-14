@@ -5,11 +5,8 @@ import java.sql.ResultSet;
 public class AdminDb{
     public static void addTheatre(String name, String location, int capacity, boolean isAc) throws SQLException {
         int rowsAffected = 0;
-        Connection con = null;
-        PreparedStatement pst = null;
         try {
-            con = DatabaseConnection.getConnection();
-            pst = con.prepareStatement(Queries.add_theatre);
+            PreparedStatement pst = DatabaseConnection.getConnection().prepareStatement(Queries.add_theatre);
             pst.setString(1, name);
             pst.setString(2, location);
             pst.setInt(3, capacity);
@@ -23,15 +20,10 @@ public class AdminDb{
         } 
     }
     public static String displayTheatre() throws SQLException {
-        Connection con = null;
-        PreparedStatement pst = null;
-        ResultSet rs = null;
         StringBuilder sb = new StringBuilder();  
         try {
-            String Query = "select * from theatre";
-            con = DatabaseConnection.getConnection();
-            pst = con.prepareStatement(Query);
-            rs = pst.executeQuery();
+            PreparedStatement pst =DatabaseConnection.getConnection().prepareStatement(Queries.dis_theatre);
+            ResultSet rs = pst.executeQuery();
             while (rs.next()) {
                 sb.append("----------------------------------\n");
                 sb.append("Id         : ").append(rs.getInt(1)).append("\n");
@@ -49,11 +41,8 @@ public class AdminDb{
 
     public static void addMovie(String name, String language, long duration) throws SQLException {
         int rowsAffected = 0;
-        Connection con = null;
-        PreparedStatement pst = null;
         try {
-            con = DatabaseConnection.getConnection();
-            pst = con.prepareStatement(Queries.add_movie);
+            PreparedStatement pst = DatabaseConnection.getConnection().prepareStatement(Queries.add_movie);
             pst.setString(1, name);
             pst.setString(2, language);
             pst.setLong(3, duration);
@@ -67,14 +56,10 @@ public class AdminDb{
     }
 
     public static String displayMovie() throws SQLException {
-        Connection con = null;
-        PreparedStatement pst = null;
-        ResultSet rs = null;
         StringBuilder sb = new StringBuilder(); 
         try {
-            con = DatabaseConnection.getConnection();
-            pst = con.prepareStatement(Queries.display_movie);  
-            rs = pst.executeQuery(); 
+            PreparedStatement pst = DatabaseConnection.getConnection().prepareStatement(Queries.display_movie);  
+            ResultSet rs = pst.executeQuery(); 
             while (rs.next()) {
                 sb.append("------------------------------------------\n");
                 sb.append(String.format("| %-16s : %-20d |\n", "Movie Id         ", rs.getInt("id")));
@@ -117,16 +102,12 @@ public class AdminDb{
         }
     }
     public static void deleteTheatre(int id) {
-        Connection con = null;
-        PreparedStatement pst = null;
-        ResultSet rs = null;
         try {
-            con = DatabaseConnection.getConnection();
-            pst = con.prepareStatement(Queries.checkQuery);
+            PreparedStatement pst = DatabaseConnection.getConnection().prepareStatement(Queries.checkQuery);
             pst.setInt(1, id);
-            rs = pst.executeQuery();
+            ResultSet rs = pst.executeQuery();
             if (rs.next()) {
-                pst = con.prepareStatement(Queries.deleteQuery);
+                pst = DatabaseConnection.getConnection().prepareStatement(Queries.deleteQuery);
                 pst.setInt(1, id);
                 int rowsAffected = pst.executeUpdate();
                 if (rowsAffected > 0) {
@@ -142,16 +123,12 @@ public class AdminDb{
         }
     }
     public static void deleteMovie(int id) {
-        Connection con = null;
-        PreparedStatement pst = null;
-        ResultSet rs = null;
         try {
-            con = DatabaseConnection.getConnection();
-            pst = con.prepareStatement(Queries.checkQuery_movie);
+            PreparedStatement pst = DatabaseConnection.getConnection().prepareStatement(Queries.checkQuery_movie);
             pst.setInt(1, id);
-            rs = pst.executeQuery();
+            ResultSet rs = pst.executeQuery();
             if (rs.next()) {
-                pst = con.prepareStatement(Queries.deleteQuery);
+                pst = DatabaseConnection.getConnection().prepareStatement(Queries.deleteQuery);
                 pst.setInt(1, id);
                 int rowsAffected = pst.executeUpdate();
                 if (rowsAffected > 0) {
@@ -168,19 +145,16 @@ public class AdminDb{
     }
     public static int add_admin(String name, String username, String mail, Long mobile, String password) throws SQLException {
         int rowsAffected = 0;
-        Connection con = null;
-        PreparedStatement pst = null;
         int rs = 0;
         try {
-            con = DatabaseConnection.getConnection();
-            pst = con.prepareStatement(Queries.insert_admin);
+            PreparedStatement pst = DatabaseConnection.getConnection().prepareStatement(Queries.insert_admin);
             pst.setString(1, name);
             pst.setLong(2, mobile);
             pst.setString(3, mail);   
             rs = pst.executeUpdate();
             if (rs > 0) {
                 int userId = getId(mail);  
-                admincred(con, userId, username, password);  
+                admincred(DatabaseConnection.getConnection(), userId, username, password);  
                 rowsAffected = 1;  
             }
         } catch (SQLException e) {
@@ -191,9 +165,8 @@ public class AdminDb{
     }
 
     public static void admincred(Connection con, int id, String username, String password) throws SQLException {
-        PreparedStatement pst = null;
         try {
-            pst = con.prepareStatement(Queries.insert_admincred);
+             PreparedStatement pst = DatabaseConnection.getConnection().prepareStatement(Queries.insert_admincred);
             pst.setInt(1, id);
             pst.setString(2, username);
             pst.setString(3, password);
@@ -204,14 +177,11 @@ public class AdminDb{
         } 
     }
     public static int getId(String email) throws SQLException {
-        Connection con = null;
-        PreparedStatement pst = null;
-        ResultSet rs = null;
         try {
-            con = DatabaseConnection.getConnection();
-            pst = con.prepareStatement(Queries.select_adminid);
+
+            PreparedStatement pst = DatabaseConnection.getConnection().prepareStatement(Queries.select_adminid);
             pst.setString(1, email);
-            rs = pst.executeQuery();
+            ResultSet rs = pst.executeQuery();
             if (rs.next()) {
                 return rs.getInt("id");  
             } else {
@@ -223,11 +193,8 @@ public class AdminDb{
         }     
     }
     public static void delete_Admin(String mail) {
-        Connection con = null;
-        PreparedStatement pst = null;
         try {
-            con = DatabaseConnection.getConnection();
-            pst = con.prepareStatement(Queries.delete_admin);
+            PreparedStatement pst = DatabaseConnection.getConnection().prepareStatement(Queries.delete_admin);
             pst.setString(1, mail);
             int rowsAffected = pst.executeUpdate();
             if (rowsAffected > 0) {
@@ -266,8 +233,8 @@ public class AdminDb{
     public static int adminlogin(String username, String password) throws SQLException {
         int userId = -1; 
         String query = "SELECT id FROM admincred WHERE username = ? AND password = ?";
-        try (Connection con = DatabaseConnection.getConnection(); 
-             PreparedStatement pst = con.prepareStatement(query)) {
+        try {
+            PreparedStatement pst = DatabaseConnection.getConnection().prepareStatement(query);
             pst.setString(1, username);
             pst.setString(2, password);  
             ResultSet rs = pst.executeQuery();
@@ -278,6 +245,9 @@ public class AdminDb{
             } else {
                 System.out.println("Invalid username or password.");
             }
+        }
+        catch(SQLException e){
+        	System.out.println("Admin Not Found");
         }
         return userId;
     }

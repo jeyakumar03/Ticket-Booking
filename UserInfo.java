@@ -6,7 +6,7 @@ public class UserInfo{
 	    boolean b=true;
 	    while(b){
 	      System.out.println("------------------------------------------------------");
-	      System.out.println("1.Sign in\n2.Sign up\n3.Exit ,");
+	      System.out.println("1.Sign in\n2.Sign up\n3.Exit");
 	      System.out.println("------------------------------------------------------");
 	      System.out.println("Enter your choice:");
 	      int ch=ob.nextInt();	      

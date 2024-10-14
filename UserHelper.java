@@ -4,7 +4,6 @@ import java.util.Scanner;
 public class UserHelper {
     private static Scanner scanner = new Scanner(System.in);
     private static UserDb userdb = new UserDb();
-
     public static void signup() throws SQLException {
         System.out.println("Enter the name:");
         String name = scanner.nextLine();
@@ -12,16 +11,14 @@ public class UserHelper {
         String username = scanner.nextLine();
         System.out.println("Enter the mobile number:");
         long mobile = scanner.nextLong();
-        scanner.nextLine();  // consume the newline character
+        scanner.nextLine();  
         System.out.println("Enter the email id:");
         String email = scanner.nextLine();
         System.out.println("Enter the password:");
         String password = scanner.nextLine();
-
         User user = new User(name, username, mobile, email, password);
         userdb.insertUser(user);
     }
-
     public static int login() throws SQLException {
         System.out.print("Enter your username: ");
         String username = scanner.nextLine();
@@ -30,20 +27,17 @@ public class UserHelper {
 
         int userId = userdb.login(username, password);
         if (userId != 0) {
-            Booking.book(userId);  // Assuming the Booking class exists
+            Booking.book(userId);  
         }
         return userId;
     }
-
     public static void updateUser(int id) {
         while (true) {
             System.out.println("-----------------------------------------------");
             System.out.println("Enter the choice for update:\n1.Name\n2.Mobile\n3.Mail\n4.Password\n5.Exit");
             System.out.println("-----------------------------------------------");
-
             int choice = scanner.nextInt();
-            scanner.nextLine();  // consume newline
-
+            scanner.nextLine();  
             switch (choice) {
                 case 1:
                     System.out.println("Enter the new name:");
@@ -53,7 +47,7 @@ public class UserHelper {
                 case 2:
                     System.out.println("Enter the new mobile number:");
                     long newMobile = scanner.nextLong();
-                    scanner.nextLine();  // consume newline
+                    scanner.nextLine();  
                     userdb.updateUser("mobile", String.valueOf(newMobile), id);
                     break;
                 case 3:

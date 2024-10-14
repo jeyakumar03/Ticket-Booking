@@ -32,5 +32,6 @@ public class Queries{
       	public static final String display_movielocation= "SELECT * FROM theatre where location=?";
       	public static final String displaymovieonloctaion = "SELECT theatre.id, theatre.name, theatre.capacity, theatre.location, theatre.isac, movie.name as movie FROM theatre JOIN movie ON theatre.movie = movie.id WHERE theatre.location = ?";
            public static final String movie= "SELECT movie FROM theatre WHERE id=?";
+           public static final String dis_theatre = "select * from theatre";
       	public static final String current_seat_available="select sum(tickets_booked) FROM booking where theatre_id=? and session_id=? and booking_date=(select current_date) group by session_id,booking_date order by session_id";          
 }
